@@ -1,0 +1,112 @@
+
+<%
+=begin%>
+ <div class="wrapper rounded bg-white">
+
+        <div class="h3">Sign Up</div>
+        <%= form_for @current_user do |f| %>
+
+        <div class="form">
+            <div class="row">
+                <div class="col-md-6 mt-md-0 mt-3">
+                  <label>Full Name</label>
+                  <%= f.text_field :name,  autofocus: true, autocomplete: "name", :class=>"form-control"%>
+                </div>
+            <div class="row">
+                <div class="col-md-6 mt-md-0 mt-3">
+                    <%= f.label :pref_ %> 
+                    <%= f.password_field :password, autocomplete: "new-password", :class=>"form-control" %>
+                    <% if @minimum_password_length %>
+                          <em><%= @minimum_password_length %> characters minimum</em>
+                        <% end %>
+                  </div>
+                  <div class="col-md-6 mt-md-0 mt-3">
+                    <label>Password Confermation</label>
+                    <%= f.password_field :password_confirmation, autocomplete: "new-password" , :class=>"form-control" %>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mt-md-0 mt-3">
+                <%= f.label :current_password %>
+                <%= f.password_field :current_password, autocomplete: "current-password", :class => "form-control" %>
+                 <i>we need your current password to confirm your changes</i>
+              </div>
+            </div>
+              <%= f.submit "Update" , data: {turbo: false}, :class=>"btn btn-primary mt-3"%>
+              <%end%>
+        </div>
+        
+    </div> 
+<%
+=end%>
+
+<div class="wrapper rounded bg-white">
+<div class="form">
+  <%= form_for(@user) do |f| %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+
+        <% end %>
+        </ul>
+      </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-6 mt-md-0 mt-3">
+      <%= f.label :name %>
+      <%= f.text_field :name , :class => "form-control"%>
+    </div>
+    <div class="col-md-6 mt-md-0 mt-3">
+      <%= f.label :bio %>
+      <%= f.text_area :bio, :class => "form-control"%>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 mt-md-0 mt-3">
+      <%= f.label "Min Age" %>
+      <%= f.number_field :pref_age_min, option = {:min => 18, :class => "form-control"} %>
+    </div>
+    <div class="col-md-2 mt-md-0 mt-3">
+      <%= f.label "Max Age" %>
+      <%= f.number_field :pref_age_max, option = {:max => 200, :class => "form-control"} %>
+    </div>
+    <div class="col-md-6 mt-md-0 mt-3">
+          <label>Prefered Sex</label>
+          <div class="d-flex align-items-center mt-2">
+              <label class="option">
+                  <%= f.radio_button :pref_sex, 0 %>Male
+                  <span class="checkmark"></span>
+              </label>
+              <label class="option ms-4">
+                      <%= f.radio_button :pref_sex, 1 %>Female
+                  <span class="checkmark"></span>
+              </label>
+          </div>
+      </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-2 mt-md-0 mt-3">
+      <%= f.label "Min Dist" %>
+      <%= f.number_field :pref_dist_max, option = {:min => 0, :class => "form-control"} %>
+    </div>
+    <div class="col-md-2 mt-md-0 mt-3">
+      <%= f.label "Max Dist" %>
+      <%= f.number_field :pref_dist_max, option = {:max => 100, :class => "form-control"} %></br>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit :class => "btn btn-primary" %></br>
+  </div>
+<% end %>
+</br>
+<%= link_to "Edit Personal Info", edit_user_registration_path, :class => "btn btn-secondary" %>
+
+</div>
+</div>

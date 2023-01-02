@@ -1,0 +1,34 @@
+
+<table class="table">
+<thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Name</th>
+    <th scope="col">Email</th>
+    <th scope="col">Sex</th>
+    <th scope="col">Prefered Sex</th>
+  </tr>
+</thead>
+<tbody>
+      <% User.all.each do |user, index|%>
+      <tr>
+          <th scope="row"><%= index.to_i %></th>
+          <td><%= user.name%></td>
+          <td><%= user.email %></td>
+          <td><%= user.sex %></td> 
+          <td><%= user.pref_sex %></td>
+      </tr>
+  <%end%>
+</tbody>
+</table>
+
+<%= form_with url: admin_search_user_path, method: :get do |f|%>
+    <%= f.number_field "admin[search]", :value => params[:search] %>
+    <%= f.submit "search", :class => "btn btn-primary"%>
+<%end%>
+
+
+<%= button_to "reset likes", admin_reset_likes_path %>
+<%= button_to "reset dislikes", admin_reset_likes_dislikes_path %>
+<%= button_to "reset posts", admin_reset_posts_path %>
+<%= button_to "reset matches", admin_reset_matches_path %>

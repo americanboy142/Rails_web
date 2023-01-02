@@ -1,0 +1,2 @@
+class AdminTool < ApplicationRecord
+end

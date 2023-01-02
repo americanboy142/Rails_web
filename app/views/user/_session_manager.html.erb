@@ -1,0 +1,18 @@
+<% if current_user %>
+    <li class="nav-item dropdown">
+                <%= link_to image_tag("16363.png", size:"35", style:"color:gray"), profile_path,class:"nav-link dropdown:hover" %>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <%= link_to current_user.name , profile_path,class:"dropdown-item" %>
+                    <%= button_to "Log out", destroy_user_session_path, method: :delete , class:"dropdown-item" %>
+                </div>
+            </li>
+<% else %>
+<li class="nav-item dropdown">
+                <%= link_to image_tag("16363.png", size:"35", style:"color:gray"), profile_path,class:"nav-link dropdown:hover" %>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <%= link_to "Log in", new_user_session_path , class:"dropdown-item"%>
+                    <%= link_to "Sign up", new_user_registration_path , class:"dropdown-item"%>
+                </div>
+            </li>
+
+<% end %>

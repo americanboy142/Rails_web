@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>Profile</h1>
+    <%= @current_user.id %>
+    <%= @current_user.DOB %></br>
+    <%= @current_user.bio %></br>
+    <%= @current_user.likes %></br>
+    <% if current_user.role == 2 %>
+        <%= link_to "Admin", admin_path, :class =>"btn btn-secondary", :style => "width:200px;" %>
+    <%end%>
+    <%= link_to "Edit Profile" , preferences_path , :class =>"btn btn-secondary", :style => "width:200px;"%>
+    <%= link_to "Add New Post" , new_test_post_path , :class =>"btn btn-secondary", :style => "width:200px;"%>
+    <%  %>
+    <div id="test_posts">
+        <% @test_posts.each do |test_post| %>
+                <%= render test_post %>
+                <%= User.find(LikesYou.where(test_post_id: test_post.id).pluck(:user_id)).pluck(:name) %>
+        <% end %>
+    </div>
+</div>

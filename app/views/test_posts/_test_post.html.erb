@@ -1,0 +1,40 @@
+<style>
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width:416px;
+}
+
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px 16px;
+}
+</style>
+
+<div id="<%= dom_id test_post %>">
+  <div class="card d-flex">
+    <%= link_to image_tag("iStock-476085198.jpg", size: "400x500"), test_post %>
+    <div class="container">
+      <strong>Title:</strong>
+      <%= test_post.title %></br>
+      <%= test_post.body %></br>
+      <p>Sex: <%= test_post.sex %></p>
+      <p>Id: <%= test_post.user_id %></p>
+      <p>Age: <%= test_post.age %></p>
+      <%
+=begin%>
+ <% if test_post.created_at < 1.day.ago.to_date %>
+        <% test_post.delete %>
+      <% end %> 
+<%
+=end%>
+    </div>
+  </div>
+</div>

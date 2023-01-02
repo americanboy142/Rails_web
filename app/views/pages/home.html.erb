@@ -1,0 +1,554 @@
+<style>
+.sandBox{
+  position:relative;
+}
+.product-image, .option-image{
+    position:absolute;
+    margin-left:auto;
+    margin-right:auto;
+    left: 0; /*NEW*/
+    right: 0; /*NEW*/
+    width: fit-content;
+    height: fit-content;
+    background-color: white;
+    border-radius: 10px;
+    
+}
+.product-image{
+  z-index:-1;
+}
+
+
+* {
+	box-sizing: border-box;
+}
+body {
+	background-color: #f5f7fa;
+	font-family: 'Roboto', sans-serif;
+	margin: 0;
+}
+.container {
+	display: flex;
+}
+.side {
+	min-width: 320px;
+	background-color: #fff;
+	min-height: 100vh;
+	border-right: 1px solid #e1e1e1;
+}
+.content {
+	width: 100%;
+	display: flex;
+	padding: 20px 0;
+	align-items: center;
+	flex-direction: column;
+}
+.side .header {
+	background: linear-gradient(262deg, #44c250, #4280c7);
+	width: 100%;
+	height: 80px;
+	box-shadow: 0 1px 8px 0 rgba(0, 20, 20, 0.2);
+	display: flex;
+	align-items: center;
+	padding: 0 20px;
+}
+
+.side .header .avatar img {
+	width: 40px;
+	height: 40px;
+	border-radius: 40px;
+	border: 2px solid #fff;
+	box-shadow: 0 1px 8px 0 rgba(0, 20, 20, 0.2);
+}
+
+.side .header .title {
+	padding: 0 10px;
+	color: #fff;
+	font-size: 23px;
+}
+
+.side .menu ul {
+	display: flex;
+	padding: 0 20px;
+}
+
+.side .menu ul li {
+	list-style: none;
+	margin: 0 10px;
+	font-weight: 700;
+	font-size: 15px;
+	letter-spacing: 0.5px;
+}
+
+.side .menu .active {
+	border-bottom: 3px solid #fd5068;
+	padding-bottom: 2px;
+}
+
+.side .messages {
+	padding: 10px 20px;
+	display: flex;
+	align-items: center;
+	transition: 0.2s box-shadow;
+}
+
+.side .messages .avatar img {
+	width: 70px;
+	height: 70px;
+	border-radius: 70px;
+}
+
+.side .messages .user {
+	padding: 0 10px;
+	font-weight: 500;
+	letter-spacing: 0.5px;
+	font-size: 18px;
+}
+
+.side .messages .text {
+	width: 200px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 0 10px;
+	font-weight: 300;
+	font-size: 15px;
+	opacity: 0.8;
+}
+
+.side .messages:hover {
+	box-shadow: 0 0 15px 0 rgba(43, 78, 78, 0.1);
+	border-right: 5px solid #fd5068;
+}
+
+.container .card {
+	position: relative;
+	height: 450px;
+}
+
+.content .card .user {
+	width: 380px;
+	height: 450px;
+	object-fit: cover;
+	border-radius: 10px;
+	box-shadow: 0 1px 10px 0 rgba(0, 20, 20, 0.5);
+}
+
+.content .card .user .profile {
+	position: absolute;
+	bottom: 0px;
+	left: 20px;
+}
+
+.content .card .user .name {
+	color: #fff;
+	font-size: 32px;
+	font-weight: 700;
+	letter-spacing: 0.5px;
+	text-shadow: 1px 1px 5px #444;
+}
+
+.content .card .user .name span {
+	font-size: 26px;
+}
+
+.content .card .local {
+	display: flex;
+	align-items: center;
+	padding: 0 0 20px 0;
+}
+
+.content .card .local i {
+	margin: 5px 0;
+	color: #fff;
+}
+
+.content .card .local span {
+	color: #fff;
+	padding: 0 10px;
+	text-shadow: 1px 1px 5px #444;
+}
+
+.content .buttons {
+	margin-top: 10px;
+	display: flex;
+	align-items: center;
+}
+
+.content .buttons .no i {
+	color: #fd2e79;
+	font-size: 33px;
+}
+
+.content .buttons .star i {
+	color: #2bb1ff;
+	font-size: 22px;
+}
+
+.content .buttons .heart i {
+	color: #11e298;
+	font-size: 32px;
+}
+
+.content .buttons .no,
+.content .buttons .star,
+.content .buttons .heart {
+	background-color: #fff;
+	width: 70px;
+	height: 70px;
+	box-shadow: 0 1px 10px 0 rgba(0, 20, 20, 0.1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 70px;
+	margin: 4px;
+	transition: 0.2s transform;
+}
+
+.content .buttons:hover{
+    background:#22222;
+}
+
+.content .buttons .star {
+	width: 60px;
+	height: 60px;
+}
+.card-overlap{
+    position: absolute;
+    top: 80%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+
+}
+
+.box{
+    position: absolute;
+}
+
+</style>
+<link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;1,500&display=swap"
+    rel="stylesheet"
+/>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+/>
+
+<% def time_sence(date) %>
+    <% seconds = (Time.now-date).to_i %>
+    <% if seconds/60 <= 1 %>
+        <% return seconds.to_i.to_s + "s" %>
+    <% elsif seconds/(60*60) <= 1 %>
+        <% return (seconds/60.to_i).to_s + 'm' %>
+    <% elsif seconds/(60*60*24) <= 1 %>
+        <% return (seconds/(60*60).to_i).to_s + 'h' %>
+    <% elsif seconds/(60*60*24*7) <= 1 %>
+        <% return (seconds/(60*60*24).to_i).to_s + "w" %>
+        
+    <%end%>
+<%end%>
+
+<body style="margin:20px">
+    <div class="container">
+    <!--===================== SIDE MENUE =========================-->
+        <div class="container">
+			<div class="side">
+                <!--===================== PROFILE =========================-->
+                    <div class="header">
+                            <div class="avatar">
+                                <%= link_to image_tag("https://randomuser.me/api/portraits/women/64.jpg"), profile_path, :class =>"btn" %>
+                                
+                            </div>
+                            <div>
+                            <div class="title"><%=current_user.name%></div>
+                            </div>
+                    </div>
+                <!--==============================================-->
+                <!--===================== SIDE MENUE TABS =========================-->
+                    <div class="menu">
+                        <ul>
+                            <li><button class="btn tablinks" onclick="openCity(event, 'Matches')">Matches</button></li>
+                            <li><button class="btn tablinks" onclick="openCity(event, 'Messages')">Messages</button></li>
+                        </ul>
+                    </div>
+                <!--==============================================-->
+
+                <!--===================== SIDE MENUE MATCHES UNMESSAGED =========================-->
+                    <div id="Matches" class="tabcontent">
+                        <div class="container">
+                        <% i=0 %>
+                            <% if @match_unmessaged != []%>
+                                <% @match_unmessaged.each do |match| %>
+                                    <% i+=1 %>
+                                        <div class="card" style="display:inline-block;max-height:100px;margin-right:2px;">
+                                            <%= link_to image_tag("https://randomuser.me/api/portraits/women/38.jpg", style: "max-height:100px;max-width:100px;border-radius:5px") , messages_path(:message => {:match_id => match.id}), :class => "card-img-top stretched-link" %>
+                                                <div class="card-overlap">
+                                                    <h5 style="color:white;"><%= User.find(match.user2).name.split(' ')[0] %></h5>
+                                                </div>
+                                        </div>
+                                        <% if i == 0 %>
+                                            <div class="card" style="display:inline-block;max-height:100px;margin-right:2px;">
+                                        <%else%>
+                                            <div class="card" style="max-height:100px;margin-right:2px;">   
+                                        <%end%>
+                                        
+                                            <%= link_to image_tag("https://randomuser.me/api/portraits/women/38.jpg", style: "max-height:100px;max-width:100px;border-radius:5px") , messages_path(:message => {:match_id => match.id}), :class => "card-img-top stretched-link" %>
+                                            <div class="card-overlap">
+                                                <h5 style="color:white;"><%= User.find(match.user2).name.split(' ')[0] %></h5>
+                                            </div>
+                                        </div>
+                                <%end%>
+                            <%end%>
+                        </div>
+                    </div>
+                <!--==============================================-->
+
+                <!--===================== SIDE MENUE MATCHES MESSAGED =========================-->
+                    <% if @match_messaged != []%>
+                        <% @match_messaged.each do |match| %>
+                            <% last_message = Message.where(:match_id => match.id).last %>
+                            <div id="Messages" class="tabcontent">
+                                <!--===================== TEMP TO FIND CORRECT USER =========================-->
+                                    <% if match.user_id == current_user.id %>
+                                    <div class="box">
+                                        <div class="messages">
+                                            <div class="avatar">
+                                                <img src="https://randomuser.me/api/portraits/women/38.jpg" alt="" />
+                                            </div>
+                                            <!--===================== DISPLAY AND FORMAT LAST MESSAGE =========================-->
+                                                <div class="message">
+                                                    <% if last_message.user_id == current_user.id %>
+                                                        <div class="user"><%= User.find(match.user2).name.split(' ')[0] + " " %><%= image_tag('send.png', size:"25x25")%></div>
+                                                    <%else%>
+                                                        <% if !last_message.read %>
+                                                            <div class="user"><%= User.find(match.user2).name.split(' ')[0] + " " %><%= image_tag('neq_message.png', size:"25x25")%></div>
+                                                        <%end%>
+                                                    <%end%>
+                                                    
+                                                    <div class="text"><%= time_sence(last_message.created_at) %></div>
+                                                    
+                                                    <div class="text"><%= last_message.body %></div>
+                                                    <%= link_to ""  , messages_path(:message => {:match_id => match.id}), :class => "stretched-link" %>
+                                                </div>
+                                            <!--==============================================-->
+                                        </div>
+                                    </div>
+                                    
+                                    <%else%>
+                                        <div class="box">
+                                            <div class="messages">
+                                                <div class="avatar">
+                                                    <img src="https://randomuser.me/api/portraits/women/38.jpg" alt="" />
+                                                </div>
+                                                <div class="message">
+                                                    <div class="user"><%= User.find(match.user_id).name.split(' ')[0]  %></div>
+                                                    <div class="text"><%= time_sence(last_message.created_at) %></div>
+                                                    <div class="text"><%= last_message.body %></div>
+                                                    <%= link_to ""  , messages_path(:message => {:match_id => match.id}), :class => "stretched-link" %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                    <%end%>
+                                <!--==============================================-->
+                                
+                            </div>
+                        <%end%>
+                    <% end %>
+                <!--==============================================-->
+			</div>
+       </div>
+    <!--==============================================-->
+
+        <!--===================== MAIN CARDS =========================-->
+            <div class="container">
+                    <% if @test_posts != [] %>
+                    <!--===================== LOOP THROUGH TEST_POSTS =========================-->
+                        <% @test_posts.each do |test_post| %>
+                                    <% test_post_user = User.find(test_post.user_id) %>
+                                    <div class="box">
+                                    <div class="content" id=<%=test_post.user_id%>>
+                                        <div class="card" >
+                                            <div class="user">
+                                                <img
+                                                    class="user"
+                                                    src="https://images.unsplash.com/photo-1532910404247-7ee9488d7292?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=375&q=80"
+                                                    alt=""
+                                                />
+                                                <div class="profile">
+                                                    <div class="name"><%= test_post_user.name.split(" ")[0] %><span><%= " " + ((Time.now.to_date - test_post_user.DOB).to_i/365).to_s %></span></div>
+                                                    <div class="local">
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                        <span>a 20 quilômetros daqui</span>
+                                                    </div>
+                                                    <div class="local">
+                                                    <span><%=(test_post.id).to_s + test_post.body%></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="buttons">
+                                            <!--===================== DILIKE BUTTON =========================-->
+                                                <div class="no">
+                                                    <i class="fas fa-times"></i>
+                                                </div>
+                                            <!--==============================================-->
+
+                                            <!--===================== TEMP SUPERLIKE =========================-->
+                                                <div class="star">
+                                                    <i class="fas fa-star fa"></i>
+                                                </div>
+                                            <!--==============================================-->
+
+                                            <!--===================== TEMP LIKE AND MATCH BUTTON =========================-->
+                                                <div class="heart" onclick="thing_remove(<%=test_post.user_id%>)">
+                                                    <% if @user_likes.include? test_post_user.id %>
+                                                        <%= button_to image_tag("heart.png", :size=>"35x30"),  match_index_path(:match => {:user_id => current_user.id, :user2 => test_post_user.id, :user_name => current_user.name, :user2_name => User.find(test_post_user.id).name}), :class=>"btn" %>   
+                                                    <% else %>
+                                                        <%= button_to image_tag("heart.png", :size=>"35x30"), likes_you_index_path(:likes_you => {:test_post_id => test_post_user.id, :user_id => current_user.id}), :class=>"btn" %>
+                                                    <%end%>
+                                                    
+                                                </div>
+                                            <!--==============================================-->
+                                        </div>
+                                    </div>
+                                    </div>
+                            <%end%>
+                        <%end%>
+                    <!--==============================================-->
+            </div>
+        <!--==============================================-->
+    </div>
+</body>
+
+
+<%
+=begin%>
+ <div class="container">
+    <div id="test_posts">
+        <% @test_posts.each do |test_post| %>
+            <%= render test_post %>
+        <% end %>
+
+    </div>
+</div> 
+<%
+=end%>
+
+
+
+
+ <%
+=begin%>
+ <% User.update_all(:likes => "-1") %>    
+<%
+=end%>
+
+
+<%
+=begin%>
+NEEDS UN COMENT
+<div class="sandbox">
+        <% if @test_posts != [] %>
+            <% @test_posts.each do |test_post| %>
+
+                <div class="product-image">
+                    <div class="flex-container">
+                        <%= link_to image_tag("iStock-476085198.jpg", size: "400x500", style: "border-radius: 10px"), test_post %></br>
+                        <strong>Title:</strong>
+                        <%= test_post.title %></br>
+                        <%= test_post.body %></br>
+                        <%= User.where(:id => test_post.id).pluck(:likes)%>
+                        </div>
+
+
+                </div>
+                </div>
+                <% test_post_user_id = test_post.user_id %>
+                <% if @user_likes.include? test_post_user_id %>
+                    <%= form_with url:match_index_path, method: :post do |f| %>
+                        <%= f.hidden_field "match[user_id]", :value =>  current_user %>
+                        <%= f.hidden_field "match[user2]", :value => test_post_user_id %>
+                        <%= f.hidden_field "match[user_name]", :value => current_user.name %>
+                        <%= f.hidden_field "match[user2_name]", :value => User.find(test_post_user_id).name %>
+                        <%= f.submit "Match"%>
+                    <%end%>
+                <% else %>
+                    <%= form_with url:likes_you_index_path, method: :post do |f| %>
+                        <%= f.hidden_field "likes_you[test_post_id]", :value =>  test_post_user_id %>
+                        <%= f.hidden_field "likes_you[user_id]", :value => current_user.id %>
+                        <%= f.submit "Like"%>
+                    <%end%>
+                <%end%>
+<%
+=end%>
+                <%
+=begin%>
+ <%= button_to "thing", likes_you_index_path, params:{likes_you:{test_post_id: test_post.id, user_id: post_user_id}}, method: :post%> 
+<%
+=end%>
+
+<%
+=begin%>
+NEEDS UN COMENT
+                <%= form_for @user do |f| %>
+                            <%= f.hidden_field :dislikes, :value => current_user.dislikes.to_s + ',' +   test_post_user_id.to_s %> 
+                            <%= f.submit "dislike" %>                 
+                <% end %> 
+
+            <% end %>
+        <% else %>
+            <p> no people left at current settings, change settings to find more </p>
+            <%= link_to "edit profile", preferences_path, :class =>"btn btn-secondary", :style => "width:200px;"%>
+        <% end %>
+
+        
+<%
+=end%>
+        <%
+=begin%>
+ <%= test_post_ids.each do |test_post_id|%>
+        <%= button_to "like", like_path, params: { likes_you: {test_post_id}}, remote: true, :class => "btn btn-primary" %>
+        <form action="/like" method="post">
+        <input type="submit" value="like">
+        <%end%> 
+<%
+=end%>
+
+
+
+
+<%
+=begin%>
+ <%= link_to image_tag("iStock-476085198.jpg", class: "product-image", size: "400x500", style: "border-radius: 5px;")%>
+        <%= link_to image_tag("iStock-476085198.jpg", class: "option-image", size: "400x500", style: "border-radius: 5px;")%>   
+<%
+=end%>
+
+<script>
+function thing_remove(element){
+    var removed = document.getElementById(element);
+    removed.remove();
+}
+function openCity(evt, cityName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>

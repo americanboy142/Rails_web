@@ -1,0 +1,139 @@
+<p style="color: green"><%= notice %></p>
+<style>
+  .recived-message{
+    background-color: #00FFD3;
+    margin-left: 100px;
+    border-radius:10px;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+
+  .sent-message{
+    background-color: #C7BBB9;
+    border-radius:10px;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+
+  .message-box{
+    background-color:white;
+    margin-left:50%;
+    position: absolute;
+    min-height: 400px;
+    padding:20px;
+    border-radius:5px;
+    box-shadow:
+
+  }
+  
+  .chat-box{
+    background-color:#164D18;
+    min-height:400px;
+    padding:20px;
+  }
+
+
+  .message-box{
+    background-color:#164D18;
+    padding:20px;
+    position:absolute;
+    bottom:0;
+  }
+
+  .card {
+    background: #222;
+    color: rgba(250, 250, 250, 0.8);
+    margin-bottom: .5rem;
+    max-width: 15rem;
+    padding:5px;
+    border-radius:10px;
+  }
+  .wrapper{
+    background: #9fa1a1;
+  }
+
+  
+</style>
+
+
+
+
+<h1><%= @matched_user.name %></h1>
+
+<div class="container">
+  <div class="wrapper rounded">
+      <% @messages.each do |message| %>
+        <% if message.user_id == current_user.id %>
+          <div class="container">
+            <div class="d-flex justify-content-end">
+              <div class="card " style="background: #20a0d6;">
+                <%= message.body %>
+              </div>
+            </div>   
+              <% if message == @messages.last && message.delivered %>
+                <div class="d-flex justify-content-end">
+                  <p>delivered</p>
+                  </div>
+              <%end%>
+          </div>
+        <% else %>
+          <% if message.read == false %>
+            <% message.update_attribute(:read, true)%> 
+          <%end%>
+          <div class="container d-flex justify-content-start">
+            <div class="card" >
+              <%= message.body %>
+            </div>
+          </div>
+        <%end%>
+      <% end %>
+
+    
+  
+      <%= form_with url: messages_path, method: :post do |form| %>
+          <%= form.hidden_field "message[user_id]", :value => current_user.id %>
+          <%= form.hidden_field "message[match_id]", :value => @match_id %>
+            <div class="input-group">
+                <%= form.text_area "message[body]", :class => "form-control" %>
+                <%= form.submit "send", :class=>"btn btn-primary input-group-addon"%>
+            </div>
+      <%end%>
+  </div>
+</div>
+
+
+<%
+=begin %>
+<div class="the-thing">
+  <% @messages.each do |message| %>
+    <% if message.user_id == current_user.id %>
+        <p class="send">
+          <%= message.body %>
+          </p>
+    <% else %>
+        <p class="recive">
+          <%= message.body %>
+        </p>
+    <%end%>
+
+  <% end %>
+  <%= form_with url: messages_path, method: :post do |form| %>
+    <div class="form">
+      <%= form.hidden_field "message[user_id]", :value => current_user.id %>
+      <%= form.hidden_field "message[match_id]", :value => @match_id %>
+      <div class="row">
+        <div class="col-md-8 mt-md-0 mt-1">
+          <%= form.text_area "message[body]", :class => "form-control" %>
+        </div>
+        <div class="col-md-1 mt-md-0 mt-1">
+          <%= form.submit "send", :class=>"btn btn-primary"%>
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>
+<%
+=end%>
+
+
+
