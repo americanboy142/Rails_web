@@ -222,7 +222,196 @@ body {
 }
 
 .box{
+    background-image: url(<%= asset_path 'heart2.png' %>);
+    width:40px;
+    height:34px;
+}
+
+
+
+
+
+
+
+
+
+.card-container{
+    
     position: absolute;
+    width: 344px;
+    height: 1150px;
+    left: calc(50% - 344px/2 + 0.5px);
+    top: calc(50% - 538px/2 - 32.5px);
+    overflow-y: scroll;
+}
+.card-container .card-main{
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 54.15%;
+    overflow-x: scroll;
+
+    border-radius: 20px;
+}
+.card-container::-webkit-scrollbar {
+    width:0;
+}
+.card-main::-webkit-scrollbar {
+    width:0;
+}
+
+.card-container .card-main .card-name{
+    position: absolute;
+    width: 276px;
+    height: 30px;
+    left: calc(50% - 276px/2 - 1px);
+    top: calc(50% - 30px/2 + 118.5px);
+}
+
+.card-container .card-main .card-name .card-name-text{
+    position: absolute;
+    width: 133px;
+    height: 28px;
+    left: 7px;
+    top: 0px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 28px;
+    /* identical to box height, or 93% */
+
+
+    color: #FFFFFF;
+}
+
+.card-container .card-main .card-bio{
+    position: absolute;
+    width: 279px;
+    height: 33px;
+    left: calc(50% - 279px/2 + 0.5px);
+    top: calc(50% - 33px/2 + 170px);
+}
+
+.card-container .card-main .card-bio .card-bio-text{
+    position: absolute;
+    width: 272px;
+    height: 28px;
+    left: 7px;
+    top: -6px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 28px;
+    /* identical to box height, or 233% */
+
+
+    color: #FFFFFF;
+}
+
+.card-container .card-main .card-location{
+    position: absolute;
+    width: 276px;
+    height: 28px;
+    left: 13px;
+    top: 385px;
+}
+.card-container .card-main .card-location .card-location-group{
+    position: absolute;
+    width: 71.53px;
+    height: 28px;
+    left: 3.47px;
+    top: -1px;
+
+}
+.card-container .card-main .card-location .card-location-group .card-location-text{
+    position: absolute;
+    width: 49px;
+    height: 28px;
+    left: 26px;
+    top: -1px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 28px;
+    /* identical to box height, or 215% */
+
+
+    color: #FFFFFF;
+}
+.card-container .card-main .like-button{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 7px 4px;
+    gap: 10px;
+
+    position: relative;
+    width: 67px;
+    height: 68px;
+    left: calc(50% - 67px/2 - 1.5px);
+    top: calc(50% - 68px/2 + 230px);
+}
+.card-container .card-main .like-button .like-button-pic{
+    box-sizing: border-box;
+    width: 59px;
+    height: 54px;
+    position: absolute;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.card-container .card-main .card-pics{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 13px;
+
+    position: absolute;
+    width: 1311px;
+    height: 503px;
+    left: -1px;
+    top: 0px;
+
+
+}
+
+.card-container .card-main .card-pics .card-first{
+    width: 318px;
+    height: 503px;
+    background: #F3ABA7; 
+    border-radius: 20px;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.card-container .card-main .right-paddle{
+
+    position: absolute;
+    width: 47px;
+    height: 45px;
+    left: 279px;
+    top: 274px;
+
+}
+
+.like-btn{
+    background-image: url(<%= asset_path 'heart2.png' %>);
+    width:40px;
+    height:34px;
 }
 
 </style>
@@ -237,20 +426,73 @@ body {
 
 <% def time_sence(date) %>
     <% seconds = (Time.now-date).to_i %>
-    <% if seconds/60 <= 1 %>
+    <% check = 1.0.next_float %>
+    <% puts(seconds) %>
+    <% if seconds.to_f/60 < 1 %>
         <% return seconds.to_i.to_s + "s" %>
-    <% elsif seconds/(60*60) <= 1 %>
+    <% elsif seconds.to_f/(60*60) < 1 %>
         <% return (seconds/60.to_i).to_s + 'm' %>
-    <% elsif seconds/(60*60*24) <= 1 %>
+    <% elsif seconds.to_f/(60*60*24) < 1 %>
         <% return (seconds/(60*60).to_i).to_s + 'h' %>
-    <% elsif seconds/(60*60*24*7) <= 1 %>
-        <% return (seconds/(60*60*24).to_i).to_s + "w" %>
-        
+    <% elsif seconds.to_f/(60*60*24*7) < 1 %>
+        <% return (seconds/(60*60*24).to_i).to_s + 'd' %>
+    <% else %>
+        <% return (seconds/(60*60*24*7).to_i).to_s + "w" %>  
     <%end%>
 <%end%>
 
+<!--
+<div class="card-container">
+    <div class="card-main">
+        <div class="card-pics"><div class="card-first"></div></div>
+        <div class="card-name"><div class="card-name-text">Jack</div></div>
+        <div class="card-bio"><div class="card-bio-text">this is my bio it is very nice very good yes and it will get even bigger and go off the page</div></div>
+        <div class="like-button"><div class="like-button-pic"><%= image_tag("heart.png", :size=>"35x30") %></div></div>
+        
+    </div>
+</div>
+-->
+<div class="box">asdasdasdasd</div>
+<% if @test_posts != [] %>
+    <% @test_posts.each do |test_post| %>
+        <div class="card-container">
+            <div class="card-main">
+                <div class="card-pics">
+                    <div class="card-first">
+                        <%= link_to image_tag("iStock-476085198.jpg", size: "20x20", style: "border-radius: 10px"), test_post %>
+                    </div>
+                </div>
+                <div class="card-name"><div class="card-name-text"><%= test_post.user_id %></div></div>
+                <div class="card-bio"><div class="card-bio-text"><%= test_post.body %></div></div>
+
+
+                
+                <% test_post_user_id = test_post.user_id %>
+                <div class="like-button">
+                    <div class="like-button-pic">
+                        <% if @user_likes.include? test_post_user_id %>
+                            <%= button_to "",match_index_path, params: {match:{user_id:current_user,user2:test_post_user_id,user_name:current_user.name,user2_name:User.find(test_post_user_id).name}},:class=>"btn like-btn", method: :post %>   
+                        <% else %>
+                            <%= form_with url:likes_you_index_path, method: :post do |f| %>
+                                <%= f.hidden_field "likes_you[test_post_id]", :value =>  test_post_user_id %>
+                                <%= f.hidden_field "likes_you[user_id]", :value => current_user.id %>
+                                <%= f.submit "Like" , :class=>"btn btn-primary", :style=>"background-image: url('heart.png');"%>
+                            <%end%>
+                            
+                        <%end%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <%end%>
+<%end%>
+
+<%
+=begin%>
 <body style="margin:20px">
     <div class="container">
+    
+
     <!--===================== SIDE MENUE =========================-->
         <div class="container">
 			<div class="side">
@@ -287,11 +529,7 @@ body {
                                                     <h5 style="color:white;"><%= User.find(match.user2).name.split(' ')[0] %></h5>
                                                 </div>
                                         </div>
-                                        <% if i == 0 %>
-                                            <div class="card" style="display:inline-block;max-height:100px;margin-right:2px;">
-                                        <%else%>
-                                            <div class="card" style="max-height:100px;margin-right:2px;">   
-                                        <%end%>
+                                        <div class="card" style="display:inline-block;max-height:100px;margin-right:2px;">
                                         
                                             <%= link_to image_tag("https://randomuser.me/api/portraits/women/38.jpg", style: "max-height:100px;max-width:100px;border-radius:5px") , messages_path(:message => {:match_id => match.id}), :class => "card-img-top stretched-link" %>
                                             <div class="card-overlap">
@@ -421,6 +659,9 @@ body {
         <!--==============================================-->
     </div>
 </body>
+<%
+=end%>
+
 
 
 <%
@@ -551,4 +792,7 @@ function openCity(evt, cityName) {
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
 }
+
+
+
 </script>

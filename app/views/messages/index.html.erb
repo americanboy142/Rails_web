@@ -22,7 +22,6 @@
     min-height: 400px;
     padding:20px;
     border-radius:5px;
-    box-shadow:
 
   }
   
@@ -30,6 +29,7 @@
     background-color:#164D18;
     min-height:400px;
     padding:20px;
+    
   }
 
 
@@ -49,19 +49,33 @@
     border-radius:10px;
   }
   .wrapper{
-    background: #9fa1a1;
+    background: linear-gradient(161.35deg, #db4d65 14.29%, #55A8CC 93.22%);
+    border-radius:20px;
+  }
+  .wrapper .name{
+    position:fixed;
+    left:calc(50%-10px);
+    top:10px;
+
   }
 
-  
+  .form-control{
+    background: linear-gradient(120deg, #c7ccd4 0%, #adb1b8 100%);
+    border-radius:20px;
+  }
+  .input-group-addon{
+    border-radius:20px;
+
+  }
 </style>
 
 
 
 
-<h1><%= @matched_user.name %></h1>
 
 <div class="container">
-  <div class="wrapper rounded">
+  <div class="wrapper">
+    <div class="name"><h1><%= @matched_user.name.split(" ")[0] %></h1></div>
       <% @messages.each do |message| %>
         <% if message.user_id == current_user.id %>
           <div class="container">
@@ -94,12 +108,14 @@
           <%= form.hidden_field "message[user_id]", :value => current_user.id %>
           <%= form.hidden_field "message[match_id]", :value => @match_id %>
             <div class="input-group">
-                <%= form.text_area "message[body]", :class => "form-control" %>
+                <%= form.text_field "message[body]", :class => "form-control"%>
                 <%= form.submit "send", :class=>"btn btn-primary input-group-addon"%>
             </div>
       <%end%>
   </div>
 </div>
+
+
 
 
 <%

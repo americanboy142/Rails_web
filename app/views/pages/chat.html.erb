@@ -1,63 +1,120 @@
 <style>
     .card {
     background: #222;
+    width: 100px;
     border: 1px solid #dd2476;
     color: rgba(250, 250, 250, 0.8);
-    margin-bottom: 2rem;
+    margin: 10px;
     }
     .card:hover{
         background-color:#363636;
     }
+
+    .messaged-box{
+        position: absolute;
+        width: 320px;
+        height: 364px;
+        left: calc(50% - 320px/2 + 126px/2);
+        top: calc(50% - 364px/2 + 52.5px);
+        overflow-y: scroll;
+
+        background: linear-gradient(180deg, #912A93 0%, #32ACBD 100%);
+        border-radius: 10px;
+    }
+    .match-box{
+        position: absolute;
+        width: 124px;
+        height: 364px;
+        left: calc(50%  - 320px/2 - 70px);
+        top: calc(50% - 364px/2 + 52.5px);
+        overflow-y: scroll;
+
+        background: linear-gradient(180deg, #C33FD9 0%, #309BBD 100%);
+        border-radius: 10px;
+    }
+    .messaged-box::-webkit-scrollbar {
+        width:0;
+    }
+    .match-box::-webkit-scrollbar {
+        width:0;
+    }
+    .message-group{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 0px;
+        gap: 10px;
+
+        position: absolute;
+        width: 296px;
+        height: 670px;
+        left: 12px;
+        top: 0px;
+
+        filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
+    }
+    .message{
+        width: 296px;
+        height: 100px;
+
+        background: #FFFFFF;
+        border-radius: 10px;
+        margin:10px;
+
+        /* Inside auto layout */
+
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+    }
+
+
 </style>
 
 <% def time_sence(date) %>
     <% seconds = (Time.now-date).to_i %>
-    <% if seconds/60 <= 1 %>
+    <% check = 1.0.next_float %>
+    <% puts(seconds) %>
+    <% if seconds.to_f/60 < 1 %>
         <% return seconds.to_i.to_s + "s" %>
-    <% elsif seconds/(60*60) <= 1 %>
+    <% elsif seconds.to_f/(60*60) < 1 %>
         <% return (seconds/60.to_i).to_s + 'm' %>
-    <% elsif seconds/(60*60*24) <= 1 %>
+    <% elsif seconds.to_f/(60*60*24) < 1 %>
         <% return (seconds/(60*60).to_i).to_s + 'h' %>
-    <% elsif seconds/(60*60*24*7) <= 1 %>
-        <% return (seconds/(60*60*24).to_i).to_s + "w" %>
-        
+    <% elsif seconds.to_f/(60*60*24*7) < 1 %>
+        <% return (seconds/(60*60*24).to_i).to_s + 'd' %>
+    <% else %>
+        <% return (seconds/(60*60*24*7).to_i).to_s + "w" %>  
     <%end%>
 <%end%>
-
-    <h1>chat</h1>
     
         <% if @match_unmessaged != []%>
-        <h4>matches</h4>
-            <% @match_unmessaged.each do |match| %>
-            <div class="container mx-auto mt-4">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card" style="width: 5rem;">
-                            <%= link_to image_tag("iStock-476085198.jpg", size: "75x100") , messages_path(:message => {:match_id => match.id}), :class => "card-img-top stretched-link" %>
-                            <div class="card-body">
-                                <h5 class="card-title"><%= User.find(match.user_id).name.split(' ')[0] %></h5>
+            <div class="match-box">
+                <% @match_unmessaged.each do |match| %>
+                    <div class="messaged-group">
+                            <div class="card">
+                                <%= link_to image_tag("iStock-476085198.jpg", size: "98x100") , messages_path(:message => {:match_id => match.id}), :class => "card-img-top stretched-link" %>
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= User.find(match.user_id).name.split(' ')[0] %></h5>
+                                </div>
                             </div>
-                        </div>
                     </div>
-                    <!--
-                    <% if match.user_id == current_user.id %>
-                        <%= link_to image_tag("iStock-476085198.jpg", size: "50x70", style: "border-radius: 40px") , messages_path(:message => {:match_id => match.id}),:style => "border-radius:50%;", :class => "btn btn-primary" %>
-                    <%else%>
-                        <%= link_to User.find(match.user_id).name.split(' ')[0] , messages_path(:message => {:match_id => match.id}),:style => "border-radius:50%;",  :class => "btn btn-primary"  %>
-                    <%end%>
-                    -->
-                </div>
+                        <!--
+                        <% if match.user_id == current_user.id %>
+                            <%= link_to image_tag("iStock-476085198.jpg", size: "50x70", style: "border-radius: 40px") , messages_path(:message => {:match_id => match.id}),:style => "border-radius:50%;", :class => "btn btn-primary" %>
+                        <%else%>
+                            <%= link_to User.find(match.user_id).name.split(' ')[0] , messages_path(:message => {:match_id => match.id}),:style => "border-radius:50%;",  :class => "btn btn-primary"  %>
+                        <%end%>
+                        -->
+                <%end%>
             </div>
-            <%end%>
         <%end%>
-    <div class="container">
         <% if @match_messaged != []%>
-        <h4> Active Chats</h4>
-        <div class="mx-auto mt-4 d-flex justify-content-center">
+            <div class="messaged-box">
             <% @match_messaged.each do |match| %>
                 <% last_message = Message.where(:match_id => match.id).last %>
-                <div class="row">
-                    <div class="card" style="width: 20rem;">
+                <div class="messaged-group">
+                    <div class="message">
                         <div class="card-body">
                             <% if match.user_id == current_user.id %>
                                 <h5 class="card-title"><%= User.find(match.user2).name.split(' ')[0]  %></h5>
@@ -74,7 +131,6 @@
                     </div>
                 </div>
             <% end %>
-        </div>
         <%end%>
     </div>
     
